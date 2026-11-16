@@ -148,8 +148,8 @@
     for (var i = 0; i < rows.length; i++) if (rows[i].slug === slug) return rows[i];
     return null;
   }
-  function cell(label, value) {
-    return '<div class="d-cell"><span>' + label + '</span><b>' + value + '</b></div>';
+  function cell(label, value, cls) {
+    return '<div class="d-cell' + (cls ? ' ' + cls : '') + '"><span>' + label + '</span><b>' + value + '</b></div>';
   }
   function openDetail(slug) {
     var r = bySlug(slug);
@@ -166,7 +166,7 @@
       cell('TVL', fullUsd(r.tvl_usd)) +
       cell('7d change', r.change_7d === null ? 'not reported' : (r.change_7d > 0 ? '+' : '') + r.change_7d.toFixed(2) + '%') +
       cell('Category', esc(r.category || 'none named')) +
-      cell('Chains', r.chains.length + ' — ' + esc(r.chains.join(', '))) +
+      cell('Chains', r.chains.length + ' — ' + esc(r.chains.join(', ')), 'wide') +
       cell('Tracked since', r.listed_at || 'not reported') +
       cell('Age, no token', ageLabel(r.age_days) + (r.age_days !== null ? ' (' + r.age_days + ' days)' : '')) +
       '</div>' +

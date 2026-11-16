@@ -320,6 +320,21 @@ function actionsFor(familyLabel: string): { core: string; deepen: string } {
 
 const fmtUsd = (n: number): string => `$${n.toLocaleString('en-US')}`;
 
+/** A compact dollar figure for running text: $2.75B, $320.2M, $850K. */
+function fmtCompact(n: number): string {
+  if (n >= 1e9) return `$${(n / 1e9).toFixed(2)}B`;
+  if (n >= 1e6) return `$${(n / 1e6).toFixed(1)}M`;
+  if (n >= 1e3) return `$${Math.round(n / 1e3)}K`;
+  return `$${n}`;
+}
+
+/** A chain list short enough for a sentence: the first four names, then a count of the rest. */
+function shortChains(p: SnapshotProtocol): string {
+  if (p.chains.length === 0) return 'one chain';
+  if (p.chains.length <= 4) return p.chains.join(', ');
+  return `${p.chains.slice(0, 4).join(', ')} and ${p.chains.length - 4} more`;
+}
+
 /**
  * A protocol's farm plan: five steps (six for the largest protocols), each generated from the
  * protocol's own category family, chains, TVL tier and age. Every step names an action, what it
@@ -331,7 +346,7 @@ export function farmSteps(p: SnapshotProtocol, s: Scored): string[] {
   const capital = capitalFor(p.tvl_usd);
   const weeks = weeksFor(s.age_days);
   const fam = actionsFor(s.family.label);
-  const chainList = p.chains.length > 0 ? p.chains.join(', ') : 'one chain';
+  const chainList = shortChains(p);
   const core = fam.core.replace('{cap}', fmtUsd(capital)).replace('{n}', String(3 + (slugHash(p.slug) % 3)));
   const steps: string[] = [];
 
@@ -367,7 +382,7 @@ export function farmSteps(p: SnapshotProtocol, s: Scored): string[] {
   );
   if (p.tvl_usd >= 750_000_000) {
     steps.push(
-      `Size discipline for a protocol of this scale (${fmtUsd(p.tvl_usd)} TVL): cap the position at the ${fmtUsd(capital)} planned here, split collateral across two asset types where the app allows, and review exposure monthly rather than chasing every new market it lists.`,
+      `Size discipline for a protocol of this scale (${fmtCompact(p.tvl_usd)} TVL): cap the position at the ${fmtUsd(capital)} planned here, split collateral across two asset types where the app allows, and review exposure monthly rather than chasing every new market it lists.`,
     );
   }
   return steps;
