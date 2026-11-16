@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Token Launch Radar — pre-token protocols ranked by implied value</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="masthead">
+  <div class="brand">
+    <div class="scope" aria-hidden="true"><span class="sweep"></span><span class="blip b1"></span><span class="blip b2"></span><span class="blip b3"></span></div>
+    <div>
+      <h1>Token Launch Radar</h1>
+      <p class="tagline">Protocols that record no token yet, ranked by the value a first token could carry — and how to farm each one before it launches.</p>
+    </div>
+  </div>
+  <div class="stats" id="stats"></div>
+  <p class="model-line" id="model-line"></p>
+</header>
+
+<section class="filters" aria-label="Filters">
+  <label class="f-search">Search
+    <input type="search" id="q" placeholder="Name or slug…" autocomplete="off">
+  </label>
+  <label>Category
+    <select id="f-category"><option value="">All categories</option></select>
+  </label>
+  <label>Chain
+    <select id="f-chain"><option value="">All chains</option></select>
+  </label>
+  <label>Min TVL
+    <select id="f-tvl">
+      <option value="0">Any size</option>
+      <option value="25000000">$25M+</option>
+      <option value="50000000">$50M+</option>
+      <option value="250000000">$250M+</option>
+      <option value="1000000000">$1B+</option>
+    </select>
+  </label>
+  <label class="f-check"><input type="checkbox" id="f-watch"> Watchlist only</label>
+  <span class="count" id="count"></span>
+</section>
+
+<main>
+  <div id="board-view">
+    <table class="board" id="board">
+      <thead><tr id="head-row"></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <p class="empty" id="empty" hidden>No protocol matches those filters. Loosen one and sweep again.</p>
+  </div>
+  <article id="detail-view" hidden></article>
+</main>
+
+<footer>
+  <h2>How to read this board</h2>
+  <p>Implied value is a model, not a prediction: TVL &times; a category-family multiple (what first tokens of that kind of protocol have carried against TVL), adjusted by seven-day TVL momentum (clamped to &minus;25%…+40%), by maturity (days live without a token, saturating) and by chain breadth. Protocols whose token already trades are counted in the header and never ranked. Wrapped, staked or bridged products of a trading token, versioned pools and centralised exchanges are set aside for the same reason: they are not launches waiting to happen. Farm plans are generated per protocol from its category, chains, TVL tier and age — costs are typical ranges, not quotes, and nothing here is financial advice.</p>
+  <p class="foot-note" id="foot-note"></p>
+</footer>
+
+<script src="../data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
